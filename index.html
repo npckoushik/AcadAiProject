@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body class="dark-theme">
+  <div class="theme-toggle">
+    <button id="theme-toggle-btn" aria-label="Toggle theme">
+      <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+      <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path>
+        <path d="M12 20v2"></path>
+        <path d="M4.93 4.93l1.41 1.41"></path>
+        <path d="M17.66 17.66l1.41 1.41"></path>
+        <path d="M2 12h2"></path>
+        <path d="M20 12h2"></path>
+        <path d="M6.34 17.66l-1.41 1.41"></path>
+        <path d="M19.07 4.93l-1.41 1.41"></path>
+      </svg>
+    </button>
+  </div>
+
+  <main class="container">
+    <h1>Tic Tac Toe</h1>
+    <div class="game-info">
+      <div id="status" class="status">Next player: X</div>
+    </div>
+    <div class="game-container">
+      <div class="game-area">
+        <div class="game-board">
+          <div class="board-row">
+            <button class="square" data-index="0"></button>
+            <button class="square" data-index="1"></button>
+            <button class="square" data-index="2"></button>
+          </div>
+          <div class="board-row">
+            <button class="square" data-index="3"></button>
+            <button class="square" data-index="4"></button>
+            <button class="square" data-index="5"></button>
+          </div>
+          <div class="board-row">
+            <button class="square" data-index="6"></button>
+            <button class="square" data-index="7"></button>
+            <button class="square" data-index="8"></button>
+          </div>
+        </div>
+
+        <div class="game-controls">
+          <button id="reset-btn" class="btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+              <path d="M16 21h5v-5"></path>
+            </svg>
+            Restart Game
+          </button>
+          <button id="algorithm-toggle-btn" class="btn">
+            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg id="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+              <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+              <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+              <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+              <line x1="2" x2="22" y1="2" y2="22"></line>
+            </svg>
+            Show Algorithm
+          </button>
+        </div>
+      </div>
+
+      <div id="algorithm-panel" class="algorithm-panel hidden">
+        <h2>Minimax Algorithm</h2>
+        
+        <div class="history-section">
+          <h3>Move History</h3>
+          <div id="history-buttons" class="history-buttons"></div>
+        </div>
+        
+        <div class="evaluation-section">
+          <h3>Current Evaluation</h3>
+          <p>Player: <span id="current-player">X</span></p>
+          <p>Best Move: <span id="best-move">None</span></p>
+          <p>Best Score: <span id="best-score">0</span></p>
+        </div>
+        
+        <div class="moves-section">
+          <h3>Move Evaluations</h3>
+          <div id="move-evaluations" class="move-evaluations">
+            <p class="empty-message">Make a move to see the algorithm in action.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="documentation">
+      <h2>How to Play</h2>
+      <p>Take turns placing X and O on the board. The first player to get three in a row wins!</p>
+      <p>Toggle the algorithm visualization to see how the minimax algorithm evaluates each possible move.</p>
+      
+      <h2>About the Algorithm</h2>
+      <p>The minimax algorithm calculates the best possible move by simulating all possible game states:</p>
+      <ul>
+        <li><strong>Positive scores</strong> favor O</li>
+        <li><strong>Negative scores</strong> favor X</li>
+        <li><strong>Zero</strong> indicates a draw</li>
+      </ul>
+      <p>The implementation includes alpha-beta pruning for efficiency and depth consideration to prefer quicker wins.</p>
+      
+      <h2>Code Documentation</h2>
+      <div class="code-docs">
+        <details>
+          <summary>Game Logic</summary>
+          <p>The game uses a 3x3 grid represented as an array of 9 elements. Key functions:</p>
+          <ul>
+            <li><code>calculateWinner(board)</code>: Checks if there's a winner</li>
+            <li><code>handleSquareClick(index)</code>: Handles player moves</li>
+            <li><code>resetGame()</code>: Resets the game state</li>
+          </ul>
+        </details>
+        
+        <details>
+          <summary>Minimax Algorithm</summary>
+          <p>The minimax algorithm is a decision-making algorithm used for finding the optimal move:</p>
+          <ul>
+            <li><code>minimax(board, depth, isMaximizing, alpha, beta)</code>: Recursive function that evaluates positions</li>
+            <li><code>runMinimax(board, isMaximizing)</code>: Runs minimax for each possible move and collects data for visualization</li>
+          </ul>
+        </details>
+        
+        <details>
+          <summary>UI Components</summary>
+          <p>The UI is built with vanilla HTML, CSS, and JavaScript:</p>
+          <ul>
+            <li>Game board with clickable squares</li>
+            <li>Algorithm visualization panel with move evaluations</li>
+            <li>History navigation to review previous moves</li>
+            <li>Theme toggle for light/dark mode</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
