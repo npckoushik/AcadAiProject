@@ -25,6 +25,11 @@ const moonIcon = document.getElementById("moon-icon")
 const sunIcon = document.getElementById("sun-icon")
 const eyeIcon = document.getElementById("eye-icon")
 const eyeOffIcon = document.getElementById("eye-off-icon")
+const resultModal = document.getElementById("result-modal")
+const resultTitle = document.getElementById("result-title")
+const resultMessage = document.getElementById("result-message")
+const resultIcon = document.getElementById("result-icon")
+const playAgainButton = document.getElementById("play-again-btn")
 
 // Initialize the game
 function initGame() {
@@ -39,6 +44,10 @@ function initGame() {
   resetButton.addEventListener("click", resetGame)
   algorithmToggleButton.addEventListener("click", toggleAlgorithm)
   themeToggleButton.addEventListener("click", toggleTheme)
+  playAgainButton.addEventListener("click", () => {
+    hideResultModal()
+    resetGame()
+  })
 
   // Initialize the board
   updateBoard()
@@ -88,8 +97,12 @@ function checkGameStatus() {
     winner = result.winner
     winningLine = result.line
     gameOver = true
+    // Show result modal after a short delay
+    setTimeout(showResultModal, 500)
   } else if (board.every((square) => square !== null)) {
     gameOver = true
+    // Show result modal after a short delay
+    setTimeout(showResultModal, 500)
   }
 }
 
@@ -224,6 +237,7 @@ function runMinimax(board, isMaximizing) {
 
 // Reset game
 function resetGame() {
+  hideResultModal()
   board = Array(9).fill(null)
   xIsNext = true
   gameOver = false
@@ -307,6 +321,34 @@ function toggleTheme() {
     moonIcon.classList.add("hidden")
     sunIcon.classList.remove("hidden")
   }
+}
+
+// Show result modal
+function showResultModal() {
+  if (winner) {
+    resultTitle.textContent = "Congratulations!"
+    resultMessage.textContent = `Player ${winner} wins the game!`
+    resultIcon.textContent = winner
+    resultIcon.className = "result-icon " + winner.toLowerCase()
+  } else {
+    resultTitle.textContent = "Game Over"
+    resultMessage.textContent = "The game ended in a draw!"
+    resultIcon.textContent = "="
+    resultIcon.className = "result-icon draw"
+  }
+
+  resultModal.classList.remove("hidden")
+  setTimeout(() => {
+    resultModal.classList.add("visible")
+  }, 10)
+}
+
+// Hide result modal
+function hideResultModal() {
+  resultModal.classList.remove("visible")
+  setTimeout(() => {
+    resultModal.classList.add("hidden")
+  }, 300)
 }
 
 // Update board UI
